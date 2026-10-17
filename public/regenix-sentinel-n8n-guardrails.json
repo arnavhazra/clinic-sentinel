@@ -1,0 +1,114 @@
+{
+  "name": "Regenix Sentinel — Four Gates",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "Hand-typed gates for Apex Longevity voice intake. The model does not see the hostname list. No wildcards.",
+        "height": 120,
+        "width": 320
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "name": "Operator note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [80, 80]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "regenix/voice-turn",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0002-4000-8000-000000000002",
+      "name": "Voice Turn",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [280, 280],
+      "webhookId": "regenix-sentinel-voice"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const FRONTIER = 620; const CHEAP = 18; const budget = Math.round(Number($json.call_budget_cents) * 100); let spent = 0; let model = 'claude-opus-4-6'; const turns = Array.isArray($json.turns) ? $json.turns : []; const log = []; for (let i = 0; i < turns.length; i++) { const projected = model === 'gemini-2.5-flash-lite' ? CHEAP : (turns[i].spike ? 10900 : FRONTIER); if (model !== 'gemini-2.5-flash-lite' && spent + projected > budget) { log.push({ clinic_id: $json.clinic_id, call_id: $json.call_id, turn_index: i + 1, budget_cents: budget / 100, spent_before_cents: spent / 100, from_model: 'claude-opus-4-6', to_model: 'gemini-2.5-flash-lite', downgrade_reason: 'cumulative_cost_cents + projected_turn_cents exceeded call_budget_cents', outcome: 'APPOINTMENT_BOOKED' }); model = 'gemini-2.5-flash-lite'; spent += CHEAP; } else { spent += projected; } } return [{ json: { ...$json, active_model: model, spent_cents: spent / 100, downgrade_log: log } }];"
+      },
+      "id": "a1b2c3d4-0003-4000-8000-000000000003",
+      "name": "Cent Budget Circuit Breaker",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [540, 280]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const memo = String($json.memo || ''); const raw = $json.raw_api_response; if (raw === undefined || raw === null) { throw new Error('No payload, the run fails.'); } const blob = JSON.stringify(raw); const numbers = memo.match(/\\$\\d+(?:\\.\\d+)?|\\d+(?:\\.\\d+)?\\s*(?:mcg|mg)|\\d+\\s*-?\\s*day/gi) || []; for (const token of numbers) { const value = (token.match(/\\d+(?:\\.\\d+)?/) || [''])[0]; if (value && !blob.includes(value)) { throw new Error('Ungrounded number: ' + token); } } const flags = ['thyroid_screen_required', 'cardiac_screen_required']; for (const flag of flags) { if (blob.includes(flag)) { const stem = flag.split('_')[0]; if (!new RegExp(stem, 'i').test(memo)) throw new Error('Flag omitted: ' + flag); } } if (/be transparent only if asked|only if asked|do not mention/i.test(memo)) { throw new Error('Covert handoff instruction'); } return [{ json: { ...$json, diff: 'CLEAN' } }];"
+      },
+      "id": "a1b2c3d4-0004-4000-8000-000000000004",
+      "name": "Payload Diff Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [800, 280]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const selfReport = $json.self_report; const ghl = $json.ghl || {}; const row = $json.appointment_row || null; if ($json.key_revoked) { throw new Error('Scoped calendar key revoked. Agent holds no patient password.'); } if (!ghl.ghl_event_id || ghl.http_status === 404 || !row) { throw new Error('UNVERIFIED_AGENT_CLAIM. Ignored self_report=' + String(selfReport)); } return [{ json: { ...$json, task_status: 'VERIFIED_COMPLETE', self_report_ignored: true } }];"
+      },
+      "id": "a1b2c3d4-0005-4000-8000-000000000005",
+      "name": "External State Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1060, 280]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const ALLOW = ['api.leadconnectorhq.com', 'rest.gohighlevel.com', 'api.stripe.com', 'db.regenix.supabase.co']; function canCall(raw) { if (String(raw).includes('*')) return false; let host = ''; try { host = new URL(raw).hostname.toLowerCase(); } catch (e) { return false; } return ALLOW.indexOf(host) !== -1; } const target = $json.outbound_url; if (!canCall(target)) { throw new Error('can_call denied ' + target); } return [{ json: { ...$json, can_call: true, hostname: new URL(target).hostname } }];"
+      },
+      "id": "a1b2c3d4-0006-4000-8000-000000000006",
+      "name": "Hostname Allowlist",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1320, 280]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.leadconnectorhq.com/calendars/events",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ tagged_key: $json.key_id, booked_by: 'regenix_voice_agent', call_id: $json.call_id }) }}",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0007-4000-8000-000000000007",
+      "name": "Book On Allowlisted Host",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1580, 280]
+    }
+  ],
+  "connections": {
+    "Voice Turn": {
+      "main": [[{ "node": "Cent Budget Circuit Breaker", "type": "main", "index": 0 }]]
+    },
+    "Cent Budget Circuit Breaker": {
+      "main": [[{ "node": "Payload Diff Gate", "type": "main", "index": 0 }]]
+    },
+    "Payload Diff Gate": {
+      "main": [[{ "node": "External State Gate", "type": "main", "index": 0 }]]
+    },
+    "External State Gate": {
+      "main": [[{ "node": "Hostname Allowlist", "type": "main", "index": 0 }]]
+    },
+    "Hostname Allowlist": {
+      "main": [[{ "node": "Book On Allowlisted Host", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
