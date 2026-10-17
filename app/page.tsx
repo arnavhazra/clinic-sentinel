@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Mark } from "@/components/ui";
 
-export const metadata: Metadata = { title: "Kernel" };
+export const metadata: Metadata = { title: { absolute: "Regenix Sentinel" } };
 
 const GATES = [
   {
