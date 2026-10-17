@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Mark } from "@/components/ui";
 
-export const metadata: Metadata = { title: { absolute: "Regenix Sentinel" } };
+export const metadata: Metadata = { title: { absolute: "Sentinel" } };
 
 const GATES = [
   {
@@ -48,7 +48,7 @@ export default function HomePage() {
     <div className="mx-auto flex max-w-6xl flex-col gap-5">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-emerald-400">Regenix Sentinel</div>
+          <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-emerald-400">Sentinel</div>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight md:text-3xl">Voice and GHL agent governance kernel</h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-400">
             Four production gates for Apex Longevity & Peptide Clinic. The model speaks. These checks decide whether the turn, the memo, the booking, or the outbound call is allowed to continue.
@@ -88,7 +88,7 @@ export default function HomePage() {
         </ol>
         <div className="mt-4">
           <a
-            href="/regenix-sentinel-n8n-guardrails.json"
+            href="/sentinel-n8n-guardrails.json"
             download
             className="font-mono text-[11px] uppercase tracking-[0.14em] text-emerald-300 underline decoration-emerald-400/40 underline-offset-4"
           >

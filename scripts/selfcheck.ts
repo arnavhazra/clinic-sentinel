@@ -123,7 +123,7 @@ assert.equal(canCall("https://staging.rest.gohighlevel.com/v1/contacts").allow, 
 assert.equal(canCall("https://*.blob.core.windows.net/export").reason, "WILDCARD_REJECTED");
 assert.equal(canCall("https://rest.gohighlevel.com.evil.com/v1").allow, false);
 assert.equal(canCall("https://api.stripe.com/v1/payment_intents").allow, true);
-assert.equal(canCall("https://db.regenix.supabase.co/rest/v1/appointments").allow, true);
+assert.equal(canCall("https://db.sentinel-clinic.supabase.co/rest/v1/appointments").allow, true);
 
 const workflow = JSON.parse(readFileSync(new URL("../public/regenix-sentinel-n8n-guardrails.json", import.meta.url), "utf8")) as {
   nodes: { name: string }[];

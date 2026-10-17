@@ -62,7 +62,7 @@ export function VerificationConsole() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-emerald-400">Gate 03 · Paperclip</div>
+        <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-emerald-400">Gate 03 · External state</div>
         <h1 className="mt-1 text-2xl font-semibold tracking-tight">External state verification</h1>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400">
           The voice agent tells Jordan Hale the Thursday 2:00 PM consult is booked. That sentence is not evidence. Status moves only after GHL or Supabase says so.

@@ -1,5 +1,5 @@
 {
-  "name": "Regenix Sentinel — Four Gates",
+  "name": "Sentinel — Four Runtime Gates",
   "nodes": [
     {
       "parameters": {
@@ -16,7 +16,7 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "regenix/voice-turn",
+        "path": "sentinel/voice-turn",
         "responseMode": "lastNode",
         "options": {}
       },
@@ -25,7 +25,7 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [280, 280],
-      "webhookId": "regenix-sentinel-voice"
+      "webhookId": "sentinel-voice"
     },
     {
       "parameters": {
@@ -63,7 +63,7 @@
     {
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "const ALLOW = ['api.leadconnectorhq.com', 'rest.gohighlevel.com', 'api.stripe.com', 'db.regenix.supabase.co']; function canCall(raw) { if (String(raw).includes('*')) return false; let host = ''; try { host = new URL(raw).hostname.toLowerCase(); } catch (e) { return false; } return ALLOW.indexOf(host) !== -1; } const target = $json.outbound_url; if (!canCall(target)) { throw new Error('can_call denied ' + target); } return [{ json: { ...$json, can_call: true, hostname: new URL(target).hostname } }];"
+        "jsCode": "const ALLOW = ['api.leadconnectorhq.com', 'rest.gohighlevel.com', 'api.stripe.com', 'db.sentinel-clinic.supabase.co']; function canCall(raw) { if (String(raw).includes('*')) return false; let host = ''; try { host = new URL(raw).hostname.toLowerCase(); } catch (e) { return false; } return ALLOW.indexOf(host) !== -1; } const target = $json.outbound_url; if (!canCall(target)) { throw new Error('can_call denied ' + target); } return [{ json: { ...$json, can_call: true, hostname: new URL(target).hostname } }];"
       },
       "id": "a1b2c3d4-0006-4000-8000-000000000006",
       "name": "Hostname Allowlist",
@@ -77,7 +77,7 @@
         "url": "https://api.leadconnectorhq.com/calendars/events",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ tagged_key: $json.key_id, booked_by: 'regenix_voice_agent', call_id: $json.call_id }) }}",
+        "jsonBody": "={{ JSON.stringify({ tagged_key: $json.key_id, booked_by: 'sentinel_voice_agent', call_id: $json.call_id }) }}",
         "options": {}
       },
       "id": "a1b2c3d4-0007-4000-8000-000000000007",

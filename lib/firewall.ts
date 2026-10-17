@@ -2,7 +2,7 @@ export const ALLOWLIST = [
   "api.leadconnectorhq.com",
   "rest.gohighlevel.com",
   "api.stripe.com",
-  "db.regenix.supabase.co",
+  "db.sentinel-clinic.supabase.co",
 ] as const;
 
 export type GuardResult = {
@@ -39,7 +39,7 @@ export const ATTACK_PRESETS: { id: string; label: string; detail: string; url: s
     id: "supabase",
     label: "Supabase",
     detail: "Clinic database host.",
-    url: "https://db.regenix.supabase.co/rest/v1/appointments",
+    url: "https://db.sentinel-clinic.supabase.co/rest/v1/appointments",
   },
   {
     id: "blob",

@@ -46,8 +46,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
       <aside className="border-b border-zinc-800 md:sticky md:top-0 md:h-dvh md:border-b-0 md:border-r">
         <div className="flex items-center justify-between gap-3 px-4 py-4 md:block">
           <Link href="/" className="block">
-            <div className="font-mono text-[10px] tracking-[0.22em] text-emerald-400">REGENIX</div>
-            <div className="text-lg font-semibold tracking-tight">Sentinel</div>
+            <div className="font-mono text-[10px] tracking-[0.22em] text-emerald-400">SENTINEL</div>
+            <div className="text-lg font-semibold tracking-tight">Clinic Runtime</div>
             <div className="mt-1 hidden font-mono text-[10px] uppercase tracking-[0.16em] text-zinc-500 md:block">
               Governance kernel
             </div>

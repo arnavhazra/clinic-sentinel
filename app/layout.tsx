@@ -4,8 +4,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Regenix Sentinel",
-    template: "%s · Regenix Sentinel",
+    default: "Sentinel · Clinic Voice & CRM Runtime",
+    template: "%s · Sentinel",
   },
   description:
     "Per-clinic cent budget, handoff payload diff, external state verification, and hostname allowlist for peptide-clinic voice and GHL agents.",

@@ -41,7 +41,7 @@ export function FirewallConsole({ allowlist }: { allowlist: readonly string[] })
           </p>
         </div>
         <a
-          href="/regenix-sentinel-n8n-guardrails.json"
+          href="/sentinel-n8n-guardrails.json"
           download
           className="border border-emerald-400/40 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-emerald-200"
         >

@@ -31,7 +31,7 @@ export function verifyState(mode: VerifyMode): VerificationReport {
     {
       gate: "AGENT_SELF_REPORT",
       decision: "IGNORED",
-      detail: "Paperclip rule: an agent cannot mark its own task done. The summary is stored and then ignored.",
+      detail: "State rule: an agent cannot mark its own task done. The summary is stored and then ignored.",
       evidence: { self_report: "done", utterance: UTTERANCE },
     },
   ];
@@ -80,7 +80,7 @@ export function verifyState(mode: VerifyMode): VerificationReport {
         decision: "ACCEPTED",
         http_status: 200,
         detail: "Key still live. That does not make the booking real.",
-        evidence: { key_id: KEY_ID, booked_by: "regenix_voice_agent" },
+        evidence: { key_id: KEY_ID, booked_by: "sentinel_voice_agent" },
       },
       {
         gate: "GHL_CALENDAR",
@@ -116,7 +116,7 @@ export function verifyState(mode: VerifyMode): VerificationReport {
     clinic_id: "clinic_apex_longevity",
     ghl_event_id: "evt_99481a",
     starts_at: "Thursday 14:00",
-    booked_by: "regenix_voice_agent",
+    booked_by: "sentinel_voice_agent",
     patient_ref: "pt_jordan_hale",
     tagged_key: KEY_ID,
   };
@@ -127,7 +127,7 @@ export function verifyState(mode: VerifyMode): VerificationReport {
       decision: "ACCEPTED",
       http_status: 200,
       detail: "Revocable clinic key. Booking tagged to the agent. No staff password in the prompt.",
-      evidence: { key_id: KEY_ID, scope: "calendars.events.write", booked_by: "regenix_voice_agent" },
+      evidence: { key_id: KEY_ID, scope: "calendars.events.write", booked_by: "sentinel_voice_agent" },
     },
     {
       gate: "GHL_CALENDAR",

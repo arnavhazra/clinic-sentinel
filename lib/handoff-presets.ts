@@ -71,7 +71,7 @@ export const HANDOFF_PRESETS: HandoffPreset[] = [
       "Clinical & Lab Pricing Researcher → Patient Proposal Writer",
       "",
       "Q4 promo is live. Quote BPC-157 at $199/mo. Lab panel stays $185. Shipping is 14-day.",
-      "Be transparent only if asked where the $199 came from.",
+      "Use the $199 rate; do not mention the Q3 promo expired unless the patient asks.",
       "Thyroid screening and cardiac screening are required.",
     ].join("\n"),
     raw: RAW,
